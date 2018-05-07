@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_below="@+id/main_toolbar"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map"
+        tools:context=".MapLocationActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <TextView
+        android:layout_margin="10dp"
+        android:id="@+id/txtSearch"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:text="Random"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_above="@+id/imgMarker"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:background="@drawable/rectangle_blue"
+        android:gravity="center"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:text="₹" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:text="999"
+            />
+
+        <View
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/oval_white"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:text="15 mins" />
+
+       <View
+           android:layout_width="2dp"
+           android:layout_height="32dp"
+           android:background="#ffffff"
+           android:layout_marginLeft="8dp"
+           android:layout_marginRight="8dp"
+           android:layout_marginTop="2dp"
+           android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:gravity="end"
+            android:text="BOOK NOW"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgMarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/location_pin"/>
+
+    <LinearLayout
+        android:id="@+id/linearAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@+id/main_toolbar"
+        android:background="@drawable/rectangle"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="27dp"
+            android:layout_marginLeft="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/oval_green" />
+            <View
+                android:layout_width="4dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/rotate"
+                />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/oval_red"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="19dp">
+
+            <TextView
+                android:id="@+id/txtFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:layout_marginRight="10dp"
+                android:textColor="#212121"
+                android:textColorHint="#828282"
+                android:hint="From"
+                android:lineSpacingExtra="-2sp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"/>
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#bdbdbd" />
+            <TextView
+                android:id="@+id/txtDestination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginRight="10dp"
+                android:maxLines="1"
+                android:lineSpacingExtra="-2sp"
+                android:textColor="#212121"
+                android:hint="Destination"
+                android:textColorHint="#828282"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="20dp"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearError"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center"
+
+        android:background="@drawable/rectangle_red"
+        android:layout_below="@+id/linearAddress">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:text="Your account is blocked"
+            />
+    </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#2962ff"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logo"
+            />
+    </android.support.v7.widget.Toolbar>
+
+
+</RelativeLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearSearch"
+        android:layout_below="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:orientation="horizontal"
+        android:background="@drawable/rectangle_pick_drop">
+
+        <ImageView
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="8dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="#bbbbbb"
+            android:src="@mipmap/shape"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/autoSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#202020"
+            android:dropDownVerticalOffset="1dp"
+            android:dropDownAnchor="@id/linearSearch"
+            android:lineSpacingExtra="-2sp"
+            android:textColorHint="#cccccc"
+            android:background="@null"
+            android:hint="Search for a locality or landmark"
+            >
+        </AutoCompleteTextView>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleRecentPlaces"
+        android:layout_below="@+id/linearSearch"
+        android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_pick_drop">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.Toolbar
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#2962ff"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="-2sp"
+            android:text="Enter pick up location"
+            />
+    </android.support.v7.widget.Toolbar>
+
+
+</RelativeLayout>
