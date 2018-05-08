@@ -63,12 +63,12 @@
         android:layout_width="match_parent">
 
         <TextView
+            android:id="@+id/txtTool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="#ffffff"
             android:lineSpacingExtra="-2sp"
-            android:text="Enter pick up location"
             />
     </android.support.v7.widget.Toolbar>
 

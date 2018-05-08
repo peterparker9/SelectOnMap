@@ -23,6 +23,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/linearCost"
         android:layout_above="@+id/imgMarker"
         android:layout_centerInParent="true"
         android:orientation="horizontal"
@@ -31,7 +32,8 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,6 +44,7 @@
             android:text="₹" />
 
         <TextView
+            android:id="@+id/txtCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -59,6 +62,7 @@
             />
 
         <TextView
+            android:id="@+id/txtTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -181,7 +185,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:gravity="center"
-
+        android:visibility="gone"
         android:background="@drawable/rectangle_red"
         android:layout_below="@+id/linearAddress">
         <TextView

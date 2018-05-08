@@ -7,5 +7,5 @@ package ashu.porter.utils;
 public class Constants {
 
     public static final String API_KEY = "AIzaSyBfcbCryaSD-j2YdRE7kZkEaPC_FK3ZLtE";
-    public static final String BASE_URL = "";
+    public static final String BASE_URL = "https://assignment-mobileapi.porter.in/";
 }

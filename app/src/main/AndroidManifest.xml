@@ -3,6 +3,7 @@
     package="ashu.porter">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -27,7 +28,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".view.MapsActivity"
+            android:name=".home.MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +37,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.PickUpFragment">
+        <activity android:name=".search.PickDropActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MapsActivity">
+                android:value=".home.MapsActivity">
             </meta-data>
 
         </activity>

@@ -28,7 +28,9 @@ public class SetLocation {
         double myLatitude = myLocation.getLatitude();
         //longitude og location
         double myLongitude = myLocation.getLongitude();
-        markOnMap(map, new LatLng(myLatitude, myLongitude));
+        LatLng latLng = new LatLng(myLatitude, myLongitude);
+        if(latLng != null)
+            markOnMap(map, latLng);
     }
 
     public static void markOnMap(GoogleMap mMap, LatLng latLng){

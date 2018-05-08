@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Porter</string>
     <string name="title_activity_maps">Map</string>
+    <string name="pick_up_tool">Set Pick Up Location</string>
+    <string name="drop_tool">Set Drop Location</string>
+    <string name="pick_up_header">Enter Pickup Location</string>
+    <string name="drop_header">Enter Drop Location</string>
 </resources>

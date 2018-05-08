@@ -1,19 +1,17 @@
-package ashu.porter.view;
+package ashu.porter.search;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,44 +21,37 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 
-import java.io.IOException;
-
 import ashu.porter.R;
 import ashu.porter.utils.PlaceArrayAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-/**
- * Created by apple on 07/05/18.
- */
+import static ashu.porter.R.id.main_toolbar;
 
-public class PickUpFragment extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks{
 
+public class PickDropActivity extends AppCompatActivity implements PickDropView{
+
+
+    @BindView(R.id.autoSearch)
     AutoCompleteTextView autoCompleteTextSearch;
+
+    @BindView(R.id.linearSearch)
     LinearLayout linearSearch;
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private static final int GOOGLE_API_CLIENT_ID = 0;
+
+    @BindView(main_toolbar)
+    Toolbar myToolbar;
+
     private GoogleApiClient mGoogleApiClient;
+
+    private int from;
+
     private PlaceArrayAdapter mPlaceArrayAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pickup);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Enter Pickup Location");
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.back);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(PickUpFragment.this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addConnectionCallbacks(this)
-                .build();
-
-        autoCompleteTextSearch = (AutoCompleteTextView) findViewById(R.id.autoSearch);
-        linearSearch = (LinearLayout)findViewById(R.id.linearSearch);
+        initializeLayout();
 
         mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
                  null);
@@ -71,12 +62,34 @@ public class PickUpFragment extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("val", parent.getItemAtPosition(position).toString());
+                    resultIntent.putExtra("from", from);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-
             }
         });
+    }
 
+    private void initializeLayout(){
+        setContentView(R.layout.activity_pickup);
+        ButterKnife.bind(this);
+        Intent i = getIntent();
+        from = i.getIntExtra("from", 0);
+        TextView txtTool = (TextView) myToolbar.findViewById(R.id.txtTool);
+        setSupportActionBar(myToolbar);
+        setToolbarTitle(from);
+        if(from == 0)
+            txtTool.setText(R.string.pick_up_header);
+        else
+            txtTool.setText(R.string.drop_header);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.back);
+    }
+
+    private void setToolbarTitle(int n){
+        if(n == 0)
+            getSupportActionBar().setTitle(R.string.pick_up_tool);
+        else
+            getSupportActionBar().setTitle(R.string.drop_tool);
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
@@ -98,26 +111,19 @@ public class PickUpFragment extends AppCompatActivity implements
             if (!places.getStatus().isSuccess()) {
                 return;
             }
-            // Selecting the first object buffer.
             final Place place = places.get(0);
             CharSequence attributions = places.getAttributions();
-
         }
     };
 
+
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void setGooglePlayClient(GoogleApiClient client) {
         mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void nullifyGooglePlayclient() {
         mPlaceArrayAdapter.setGoogleApiClient(null);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }
