@@ -71,6 +71,7 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
         initializeLayouts();
         realm = Realm.getInstance(this);
         presenter = new MapPresenter(MapsActivity.this, this);
+        presenter.isServiceable();
         mapFragment.getMapAsync(this);
     }
 
@@ -147,7 +148,7 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
         }
         else {
             txtCost.setText(cost + "");
-            txtTime.setText(time + "");
+            txtTime.setText(String.valueOf(time) + " mins");
         }
 
     }

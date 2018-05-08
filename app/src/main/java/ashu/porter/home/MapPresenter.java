@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
@@ -65,7 +68,6 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
         this.mapView = mapView;
 
         buildGoogleApiClient();
-        isServiceable();
     }
 
     public void onResume(){
@@ -116,7 +118,8 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
                     public void onNext(Object o) {
                         Map<Double, Integer> val = (HashMap)o;
                         Map.Entry<Double, Integer> entry = val.entrySet().iterator().next();
-                        mapView.populateEstimate(entry.getKey(), entry.getValue());
+                        if(mapView != null)
+                            mapView.populateEstimate(entry.getKey(), entry.getValue());
                     }
 
                     @Override
@@ -283,8 +286,8 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
 
         Observable<Serviceable> call = service.getServiceability();
 
-        call.subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
+        call.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .delay(20, TimeUnit.SECONDS)
                 .repeat()
                 .subscribeWith(new Observer<Serviceable>() {
@@ -296,10 +299,29 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
                     @Override
                     public void onNext(Serviceable serviceable) {
                         if(!serviceable.isServiceable()) {
-                            mapView.showBlocked();
+                            Handler handler = new Handler(Looper.getMainLooper()) {
+                                @Override
+                                public void handleMessage(Message msg) {
+                                    // Any UI task, example
+                                    if(mapView != null)
+                                        mapView.showBlocked();
+                                }
+                            };
+                            handler.sendEmptyMessage(1);
+
                         }
-                        else
-                            mapView.showUnblocked();
+                        else{
+                            Handler handler = new Handler(Looper.getMainLooper()) {
+                                @Override
+                                public void handleMessage(Message msg) {
+                                    // Any UI task, example
+                                    if(mapView != null)
+                                        mapView.showUnblocked();
+                                }
+                            };
+                            handler.sendEmptyMessage(1);
+                        }
+//                            mapView.showUnblocked();
                     }
 
                     @Override
