@@ -1,4 +1,4 @@
-package ashu.porter.utils;
+package ashu.porter.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,21 +21,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import ashu.porter.R;
 
@@ -194,9 +186,6 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
-
-
         public ViewHolder(View itemView) {
             super(itemView);
         }

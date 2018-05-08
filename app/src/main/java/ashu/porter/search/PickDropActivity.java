@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,14 +24,22 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 
 import ashu.porter.R;
-import ashu.porter.utils.PlaceArrayAdapter;
+import ashu.porter.adapter.PlaceArrayAdapter;
+import ashu.porter.adapter.RecentAdapter;
+import ashu.porter.db.RealmController;
+import ashu.porter.home.MapsActivity;
+import ashu.porter.model.Recent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 import static ashu.porter.R.id.main_toolbar;
 
 
-public class PickDropActivity extends AppCompatActivity implements PickDropView{
+public class PickDropActivity extends AppCompatActivity implements
+        PickDropView, GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks{
 
 
     @BindView(R.id.autoSearch)
@@ -41,11 +51,16 @@ public class PickDropActivity extends AppCompatActivity implements PickDropView{
     @BindView(main_toolbar)
     Toolbar myToolbar;
 
+    @BindView(R.id.recycleRecentPlaces)
+    RecyclerView recycleRecentPlaces;
+
     private GoogleApiClient mGoogleApiClient;
 
     private int from;
 
     private PlaceArrayAdapter mPlaceArrayAdapter;
+
+    PickDropPresenter pickDropPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,20 +68,46 @@ public class PickDropActivity extends AppCompatActivity implements PickDropView{
 
         initializeLayout();
 
+        pickDropPresenter = new PickDropPresenter(PickDropActivity.this, this);
+
         mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
                  null);
         autoCompleteTextSearch.setAdapter(mPlaceArrayAdapter);
+        recycleRecentPlaces.setLayoutManager(new LinearLayoutManager(this));
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, 1,this)
+                .addConnectionCallbacks(this)
+                .build();
+
+        recycleRecentPlaces.setVisibility(View.VISIBLE);
+
+        autoCompleteTextSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recycleRecentPlaces.setVisibility(View.GONE);
+            }
+        });
 
         autoCompleteTextSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent resultIntent = new Intent();
+                    Intent resultIntent = new Intent(PickDropActivity.this, MapsActivity.class);
                     resultIntent.putExtra("val", parent.getItemAtPosition(position).toString());
                     resultIntent.putExtra("from", from);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
             }
         });
+        Realm realm = Realm.getInstance(this);
+
+        RealmResults<Recent> recentPlaces = realm.allObjects(Recent.class);
+
+        if(!recentPlaces.isEmpty()){
+            RecentAdapter recentAdapter = new RecentAdapter(this, recentPlaces);
+            recycleRecentPlaces.setAdapter(recentAdapter);
+        }
     }
 
     private void initializeLayout(){
@@ -117,13 +158,49 @@ public class PickDropActivity extends AppCompatActivity implements PickDropView{
     };
 
 
+
     @Override
-    public void setGooglePlayClient(GoogleApiClient client) {
+    protected void onDestroy() {
+        pickDropPresenter.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        pickDropPresenter.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        pickDropPresenter.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pickDropPresenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pickDropPresenter.onPause();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
         mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
     }
 
     @Override
-    public void nullifyGooglePlayclient() {
+    public void onConnectionSuspended(int i) {
         mPlaceArrayAdapter.setGoogleApiClient(null);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

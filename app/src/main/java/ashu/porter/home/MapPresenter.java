@@ -56,11 +56,8 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
 
-
     private static int flag = 0;
     public static final int STATIC_INTEGER_VALUE = 1;
-
-
 
 
     public MapPresenter(Context context, MapView mapView){
@@ -77,7 +74,7 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
     }
 
     public void onPause(){
-        if (mGoogleApiClient != null) {
+        if (mGoogleApiClient.isConnected() && mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
     }
@@ -149,8 +146,9 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
-                SetLocation.setLocation(mMap, context);
                 mMap.setMyLocationEnabled(true);
+                SetLocation.setLocation(mMap, context);
+
             } else {
                 //Request Location Permission
                 PermissionCheck.checkLocationPermission(context);
@@ -159,14 +157,13 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
         else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            SetLocation.setLocation(mMap, context);
         }
-
 
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 LatLng midLatLng = mMap.getCameraPosition().target;
-
                 try {
                     if(flag == 0) {
                         String add = FindAddress.returnAddress(context, midLatLng);
@@ -197,6 +194,7 @@ public class MapPresenter implements OnMapReadyCallback, GoogleApiClient.Connect
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
+                        SetLocation.setLocation(mMap, context);
                     }
 
                 } else {

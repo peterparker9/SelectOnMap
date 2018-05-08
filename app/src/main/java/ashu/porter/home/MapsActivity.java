@@ -19,11 +19,13 @@ import java.io.IOException;
 import android.support.v7.app.AppCompatActivity;
 
 import ashu.porter.R;
+import ashu.porter.model.Recent;
 import ashu.porter.utils.FindAddress;
 import ashu.porter.search.PickDropActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 
 public class
@@ -58,6 +60,8 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
     public static final int STATIC_INTEGER_VALUE = 1;
     private static int flag = 0;
 
+    Realm realm;
+
 
 
 
@@ -65,13 +69,9 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeLayouts();
-
+        realm = Realm.getInstance(this);
         presenter = new MapPresenter(MapsActivity.this, this);
-
-
         mapFragment.getMapAsync(this);
-
-
     }
 
     private void initializeLayouts(){
@@ -135,6 +135,7 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
     @Override
     public void fillSource(String address) {
         txtFrom.setText(address);
+        copyToDb(address);
     }
 
     @Override
@@ -154,6 +155,15 @@ MapsActivity extends AppCompatActivity implements MapView, OnMapReadyCallback{
     @Override
     public void fillDestination(String address) {
         txtTo.setText(address);
+        copyToDb(address);
+    }
+
+    private void copyToDb(String add){
+        realm.beginTransaction();
+        Recent recent = new Recent();
+        recent.setTitle(add);
+        realm.copyToRealmOrUpdate(recent);
+        realm.commitTransaction();
     }
 
     @Override

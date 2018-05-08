@@ -8,6 +8,4 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 public interface PickDropView {
 
-    void setGooglePlayClient(GoogleApiClient client);
-    void nullifyGooglePlayclient();
 }
